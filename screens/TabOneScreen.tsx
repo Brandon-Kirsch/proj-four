@@ -11,7 +11,7 @@ import IDragon from '../src/entities/dragon';
 import { DragonListItem } from '../components/DragonListItem';
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+  <TouchableOpacity onPress={onPress} style={[styles.readItem, backgroundColor]}>
     <DragonListItem item={item} backgroundColor={backgroundColor} textColor={textColor} />
   </TouchableOpacity>
 );
@@ -28,7 +28,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Here for the MVP get</Text>
+      <Text style={styles.title}>Dragon Scroll</Text>
       <View style={styles.separatorH} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <App navigation={navigation}/>
     </View>
@@ -144,22 +144,22 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
     const color = 'black';
 
 
-    if (Dimensions.get('window').width > 1000) {
+    if (Dimensions.get('window').width > 1600) {
       return (
-        <View style={[styles.displayBox, {backgroundColor: backgroundColor}]}>
+        <View style={[styles.displayBox, {backgroundColor: backgroundColor, borderRadius: 10}]}>
           <TouchableOpacity onPress={handleSave} style={[styles.item, {backgroundColor: '#a0a0ff', borderRadius: 5}]}>
             <Text style={[{color: 'black'}]}>Save</Text>
           </TouchableOpacity>
           <TouchableWithoutFeedback style={styles.displayBox} onPress={() => handleClick(-1)}>
-          <Text style={[styles.title, {color: color}]}>{nextDragonId(store.getState().dragons)}</Text>
+          <Text style={[styles.label, {color: color}]}>{nextDragonId(store.getState().dragons)}</Text>
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="Dragon's Name"
             defaultValue={nameText}
             onChangeText={(text) => setNameText(text)}
           />
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="What is it from?"
             defaultValue={originText}
             onChangeText={(text) => setOriginText(text)}
@@ -171,28 +171,28 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
             <Text style={[{color: 'black'}]}>{isInspired ? '-inspired' : ' actual'}</Text>
           </TouchableOpacity>
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="Wings"
             value={wingNum}
             onChangeText={(text) => validateWings(text)}
             keyboardType={'decimal-pad'}
           />
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="Legs"
             value={legNum}
             onChangeText={(text) => validateLegs(text)}
             keyboardType={'decimal-pad'}
           />
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="Length"
             value={lengthNum}
             onChangeText={(text) => validateLength(text)}
             keyboardType={'decimal-pad'}
           />
           <TextInput 
-            style={[styles.borderedItem, {backgroundColor: backgroundColor}]}
+            style={styles.borderedItem}
             placeholder="Weight"
             value={weightNum}
             onChangeText={(text) => validateWeight(text)}
@@ -213,7 +213,7 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
           handleClick(-1);
           navigation.navigate('TabTwo');
         }} style={[styles.displayBox, {backgroundColor: backgroundColor}]}>
-          <Text style={[styles.title, {color: color}]}>Add New Dragon</Text>
+          <Text style={[styles.label, {color: color}]}>Add New Dragon</Text>
         </TouchableOpacity>
       )
     }
@@ -223,7 +223,7 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
     <SafeAreaView style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.7)}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.7), paddingBottom: 70}]}
+        style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.8), paddingBottom: 70}]}
       >
       <FlatList
         ListFooterComponent={renderInput}
@@ -252,13 +252,25 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 10,
   },
+  readItem: {
+    padding: 4,
+    marginVertical: 0,
+    marginHorizontal: 4,
+    paddingRight: 20
+  },
   borderedItem: {
     padding: 8,
     marginVertical: 8,
     marginHorizontal: 10,
     borderWidth: 1,
+    backgroundColor: '#eef'
   },
   title: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    marginTop: 10,
+  },
+  label: {
     fontSize: 14,
     fontWeight: 'bold',
   },

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
-import { Switch, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, Switch, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { Text, View } from '../components/Themed';
 import IDragon from '../src/entities/dragon';
@@ -13,7 +13,7 @@ import { RootTabScreenProps } from '../types';
 export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
+      <Text style={styles.title}>Edit Dragon</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {/* <EditScreenInfo path="/screens/TabTwoScreen.tsx" /> */}
       <EditTab navigation={navigation} />
@@ -206,6 +206,7 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      <ScrollView>
       <View style={styles.pair}>
         <Text style={styles.text}>Name</Text>
         <TextInput
@@ -290,6 +291,7 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
         <Text style={[styles.text, {margin: 8, fontWeight: 'bold'}]}>{!dragon || dragon.id == -1 ? 'Add Dragon' : 'Update Dragon'}</Text>
       </TouchableOpacity>
       <ToggleableDelete />
+      </ScrollView>
     </KeyboardAvoidingView>
 )} else {
   if (dragon && dragon.name != nameInput) {setNameInput(dragon.name)}

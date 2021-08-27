@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Dimensions, TouchableOpacity, StyleSheet, TextInput } from "react-native";
-import store from "../src/redux/store";
+import { Dimensions, StyleSheet, } from "react-native";
 import { Text, View } from "./Themed";
-import { nextDragonId } from "../src/reducer";
 
 
 export const DragonListItem = ({ item, backgroundColor, textColor }) => {
@@ -14,7 +12,7 @@ export const DragonListItem = ({ item, backgroundColor, textColor }) => {
         <View style={[styles.displayBox, backgroundColor, {width: (Dimensions.get('window').width * 0.85)}]}>
         <Text style={[styles.title, {flex: 1}, textColor]}>{item.id}</Text>
         <View style={styles.separatorV} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <Text style={[styles.title, {flex: 4}, textColor]}>{item.name}</Text>
+        <Text style={[styles.title, {flex: 3}, textColor]}>{item.name}</Text>
         <View style={styles.separatorV} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Text style={[styles.title, {flex: 5}, textColor]}>{item.origin}</Text>
         <View style={styles.separatorV} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
@@ -47,11 +45,12 @@ export const DragonListItem = ({ item, backgroundColor, textColor }) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+
     },
     item: {
-      padding: 10,
-      marginVertical: 8,
-      marginHorizontal: 10,
+      padding: 5,
+      marginVertical: 3,
+      marginHorizontal: 3,
     },
     title: {
       fontSize: 14,

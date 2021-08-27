@@ -1,6 +1,6 @@
 import IDragon, { convertToD } from "./entities/dragon";
 
-const BASE_URL = 'http://localhost:3000/dragon';
+const BASE_URL = 'http://192.168.0.141:3000/dragon';
 
 export async function getAll() {
     const res = await fetch(BASE_URL, {
