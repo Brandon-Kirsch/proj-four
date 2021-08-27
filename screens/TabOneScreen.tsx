@@ -113,24 +113,26 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
     }
 
     const handleSave = async () => {
-      const regEx = /\.$/
+      const trailingRegEx = /\.$/;
+      const leadingRegEx = /^\./;
       const dStyle = (isEastern ? 'Eastern' : 'Western') + (isInspired ? '-inspired' : '');
       const newDragon: IDragon = {
         id: nextDragonId(store.getState().dragons),
         name: nameText,
         origin: originText,
         style: dStyle,
-        wings: +(wingNum.replace(regEx, '')),
-        legs: +(legNum.replace(regEx, '')),
-        weight: +(weightNum.replace(regEx, '')),
-        length: +(lengthNum.replace(regEx, '')),
+        // Perhaps complicated, but each of these lines will check for both trailing and leading decimals
+        //  and deal with them accordingly.
+        wings: +(wingNum.replace(leadingRegEx, '0.').replace(trailingRegEx, '')),
+        legs: +(legNum.replace(leadingRegEx, '0.').replace(trailingRegEx, '')),
+        weight: +(weightNum.replace(leadingRegEx, '0.').replace(trailingRegEx, '')),
+        length: +(lengthNum.replace(leadingRegEx, '0.').replace(trailingRegEx, '')),
         flight: isFlying,
         magical: isMagic,
       }
 
       try {
         const res = await store.dispatch(addOneDragon(newDragon));
-        store.dispatch({ type: 'dragons/addDragons', payload: newDragon});
         store.dispatch(getAllDragons);
       } catch (error) {
         console.log(error);

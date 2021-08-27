@@ -21,7 +21,7 @@ export async function addDragon(dragon: IDragon) {
 }
 
 export async function deleteDragon(id: number, name: string) {
-    const deleteUrl = BASE_URL + '?Name=' + name
+    const deleteUrl = BASE_URL + '?Name=' + name;
     const res = await fetch(deleteUrl, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
@@ -29,4 +29,17 @@ export async function deleteDragon(id: number, name: string) {
     })
 
     return res.json();
+}
+
+export async function updateDragon(dragon: IDragon) {
+    const updateUrl = BASE_URL + '?Name=' + dragon.name;
+    const DDragon = convertToD(dragon);
+    const res = await fetch(updateUrl, {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            Identifier: DDragon.entityID,
+            ...DDragon,
+        })
+    })
 }

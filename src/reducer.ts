@@ -1,12 +1,12 @@
 import IDragon from "./entities/dragon";
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getAll, addDragon } from "./client";
+import { getAll, addDragon, deleteDragon } from "./client";
 import store from "./redux/store";
 
 const initialState = {
     dragons: [{
-        id: -1,
-        name: 'Null',
+      id: -1,
+      name: 'Null'
     }],
     state: 'idle',
     error: null,
@@ -41,12 +41,31 @@ export const addOneDragon = createAsyncThunk(
   'dragons/addDragons',
   async (newDragon: IDragon) => {
     const response = await addDragon(newDragon);
-    return response;
+    console.log(response);
+    return newDragon;
   }
 )
 
-  export function nextDragonId(dragons): number {
-    const maxId = dragons.reduce((maxId, dragon) => Math.max(dragon.id, maxId), -1);
+export const updateDragon = createAsyncThunk(
+  'dragons/updateDragon',
+  async (updatedDragon: IDragon) => {
+    const response = await addDragon(updatedDragon);
+    console.log(response);
+    return updatedDragon;
+  }
+)
+
+export const removeOneDragon = createAsyncThunk(
+  'dragons/removeDragon',
+  async (targetDragon: IDragon) => {
+    const response = await deleteDragon(targetDragon.id, targetDragon.name);
+    console.log(response);
+    return targetDragon;
+  }
+)
+
+  export function nextDragonId(dragons: IDragon[]): number {
+    const maxId = dragons.reduce((maxId: number, dragon: IDragon) => Math.max(dragon.id, maxId), -1);
     if (isNaN(maxId)) {return 0};
     return maxId + 1;
 }
@@ -85,6 +104,25 @@ export const addOneDragon = createAsyncThunk(
           state: 'idle'
         }
       }
+      case 'dragons/removeDragon': {
+        const targetId: number = action.payload.dragon.id;
+        const targetName: string = action.payload.dragon.name;
+        return {
+          ...state,
+          dragons: state.dragons.filter(({id, name}) => id != targetId && name != targetName)
+        }
+      }
+      case 'dragons/updateDragon': {
+        const targetId: number = action.payload.dragon.id;
+        const targetName: string = action.payload.dragon.name;
+        return {
+          ...state,
+          dragons: [
+            state.dragons.filter(({id, name}) => id != targetId && name != targetName),
+            action.payload.dragon,
+          ]
+        }
+      }
       case 'store/load': {
           return {
               ...state,
@@ -106,5 +144,5 @@ export const addOneDragon = createAsyncThunk(
 
 export const selectAllDragons = state => state.dragons;
 
-export const selectByID = (state, id) => 
-  state.dragons.find(dragon => dragon.id === id);
+export const selectByID = (state, id: number) => 
+  state.dragons.find((dragon: IDragon) => dragon.id === id);

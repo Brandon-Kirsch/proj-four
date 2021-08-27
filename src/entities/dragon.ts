@@ -1,27 +1,27 @@
 export default interface IDragon {
     id: number,
     name: string,
-    origin: string,
-    style: string,
-    wings: number,
-    legs: number,
-    length: number,
-    weight: number,
-    flight: boolean,
-    magical: boolean
+    origin?: string,
+    style?: string,
+    wings?: number,
+    legs?: number,
+    length?: number,
+    weight?: number,
+    flight?: boolean,
+    magical?: boolean
 }
 
 export interface DDragon {
     entityID: number,
     Name: string,
-    Origin: string,
-    Style: string,
-    Wings: number,
-    Legs: number,
-    Length: number,
-    Weight: number,
-    Flight: boolean,
-    Magical: boolean,
+    Origin?: string,
+    Style?: string,
+    Wings?: number,
+    Legs?: number,
+    Length?: number,
+    Weight?: number,
+    Flight?: boolean,
+    Magical?: boolean,
 }
 
 export function convertToD(dragon: IDragon) {
