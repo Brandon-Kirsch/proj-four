@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { ScrollView, Switch, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 import { Text, View } from '../components/Themed';
@@ -12,7 +12,7 @@ import { RootTabScreenProps } from '../types';
 
 export default function TabTwoScreen({ navigation }: RootTabScreenProps<'TabTwo'>) {
   return (
-    <View style={styles.container}>
+    <View style={styles.background}>
       <Text style={styles.title}>Edit Dragon</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {/* <EditScreenInfo path="/screens/TabTwoScreen.tsx" /> */}
@@ -187,7 +187,7 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
   const ToggleableDelete = () => {
     if (deleteEnabled) {
       return (
-        <TouchableOpacity onPress={delayDelete} style={[{backgroundColor: '#944', borderRadius: 8, opacity: (deleteEnabled ? 1 : 0.2)}]}>
+        <TouchableOpacity onPress={delayDelete} style={[styles.button, {backgroundColor: '#944', opacity: (deleteEnabled ? 1 : 0.2)}]}>
           <Text style={[styles.text, {margin: 8, fontWeight: 'bold'}]}>{deletePrimed ? 'Are you sure?' : 'Delete'}</Text>
         </TouchableOpacity>
       )
@@ -201,10 +201,11 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
   }
   
   if (isFocused) {
+    let screenWidth = Dimensions.get('window').width;
   return (
   <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={[styles.container, {width: screenWidth > 800 ? screenWidth * 0.4 : screenWidth * 0.9}]}
     >
       <ScrollView>
       <View style={styles.pair}>
@@ -219,6 +220,7 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
           placeholder={isError ? 'Name is required' : ''}
         />
       </View>
+      <View style={{flexDirection: 'row', backgroundColor: '#88f',}}>
       <View style={styles.pair}>
         <Text style={styles.text}>Origin</Text>
         <TextInput
@@ -235,6 +237,8 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
           value={styleInput}
         />
       </View>
+      </View>
+      <View style={{flexDirection: 'row', backgroundColor: '#88f',}}>
       <View style={styles.pair}>
         <Text style={styles.text}>Wings</Text>
         <TextInput
@@ -251,6 +255,8 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
           value={legsInput}
         />
       </View>
+      </View>
+      <View style={{flexDirection: 'row', backgroundColor: '#88f',}}>
       <View style={styles.pair}>
         <Text style={styles.text}>Weight (Kilos)</Text>
         <TextInput
@@ -267,6 +273,8 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
           value={lengthInput}
         />
       </View>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#88f',}}>
       <View style={styles.pair}>
         <Text style={styles.text}>{flightInput ? 'Can fly' : "Can't fly"}</Text>
         <Switch
@@ -287,10 +295,13 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
           value={magicInput}
         />
       </View>
-      <TouchableOpacity onPress={() => handleUpdate(dragon)} style={[{backgroundColor: '#46d', borderRadius: 8}]}>
+      </View>
+      <View style={{flexDirection: 'row', justifyContent: 'center', backgroundColor: '#88f',}}>
+      <TouchableOpacity onPress={() => handleUpdate(dragon)} style={[styles.button, {backgroundColor: '#46d'}]}>
         <Text style={[styles.text, {margin: 8, fontWeight: 'bold'}]}>{!dragon || dragon.id == -1 ? 'Add Dragon' : 'Update Dragon'}</Text>
       </TouchableOpacity>
       <ToggleableDelete />
+      </View>
       </ScrollView>
     </KeyboardAvoidingView>
 )} else {
@@ -304,6 +315,7 @@ const EditTab = ({ navigation }: RootTabScreenProps<'TabOne'>) => {
   if (dragon && dragon.flight != flightInput) {setFlightInput(dragon.flight)}
   if (dragon && dragon.magical != magicInput) {setMagicInput(dragon.magical)}
   if (deletePrimed) {setDeletePrimed(false)}
+  if (isError) {setIsError(false)}
   return (
     <Text>Is not focused.</Text>
   )
@@ -316,11 +328,23 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 5,
     borderRadius: 2,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  background: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 4,
+    borderRadius: 10,
+    borderColor: '#55e',
+    backgroundColor: '#88f',
   },
   title: {
     fontSize: 20,
@@ -333,6 +357,10 @@ const styles = StyleSheet.create({
     color: 'black',
     borderWidth: 1,
     backgroundColor: '#eef',
+  },
+  button: {
+    flex: 1,
+    borderRadius: 8
   },
   separator: {
     marginVertical: 30,

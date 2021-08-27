@@ -1,16 +1,27 @@
 import IDragon from "./entities/dragon";
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getAll, addDragon, deleteDragon } from "./client";
-import store from "./redux/store";
 
 const initialState = {
     dragons: [{
       id: -1,
-      name: 'Null'
+      name: 'Null',
+      origin: 'Null',
+      style: 'Western',
+      wings: 2,
+      legs: 2,
+      weight: 10,
+      length: 10,
+      flight: false,
+      magical: false,
     }],
     state: 'idle',
     error: null,
     selectedId: -1,
+    sort: {
+      key: 'id',
+      ascending: true
+    }
 }
 
 export async function getAllDragons(dispatch, getState) {
@@ -133,6 +144,23 @@ export const removeOneDragon = createAsyncThunk(
         return {
           ...state,
           selectedId: action.payload,
+        }
+      }
+      case 'store/sort': {
+        const payload = action.payload
+        const newSort = state.sort;
+        if (payload === newSort.key) {
+          newSort.ascending = !newSort.ascending;
+        } else {
+          newSort.ascending = true;
+          newSort.key = payload;
+        }
+        console.log(`Sorting by ${payload} ${newSort.ascending ? 'ascending' : 'descending'}`)
+        switch (payload) {
+          default:
+            return {...state, sort: newSort, dragons: state.dragons.sort((a, b) => newSort.ascending ? a.id - b.id : b.id - a.id)}
+          case 'name':
+            return {...state, sort: newSort, dragons: state.dragons.sort((a, b) => newSort.ascending ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name))}
         }
       }
       default:

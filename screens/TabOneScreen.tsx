@@ -8,7 +8,7 @@ import { addOneDragon, getAllDragons, nextDragonId } from '../src/reducer';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import IDragon from '../src/entities/dragon';
-import { DragonListItem } from '../components/DragonListItem';
+import { DragonHeaderItem, DragonListItem } from '../components/DragonListItem';
 
 const Item = ({ item, onPress, backgroundColor, textColor }) => (
   <TouchableOpacity onPress={onPress} style={[styles.readItem, backgroundColor]}>
@@ -41,7 +41,8 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
   // const [selectedId, setSelectedId] = useState(null);
   const selectedId: number = useSelector((state: any) => state.selectedId);
   const display: [IDragon] = useSelector((state: any) => state.dragons);
-  const sorted = display.sort((a, b) => a.id - b.id);
+  // const sortParams: {key: string, ascending: boolean} = useSelector((state: any) => state.sort);
+  let sorted = display.sort((a, b) => a.id - b.id);
 
   function handleClick(id: any) {
     const previousId = selectedId;
@@ -68,6 +69,21 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
       />
     );
   };
+
+  // const renderHeader = () => {
+  //   const handleSort = (key: string) => {
+  //     store.dispatch({ type: 'store/sort', payload: key});
+  //     store.dispatch(getAllDragons);
+  //   }
+
+  //   return (
+  //     <View style={{flexDirection: 'row', backgroundColor: '#eee'}} >
+  //       <TouchableOpacity onPress={() => handleSort('id')} >
+  //         <Text style={{color: 'black'}}>Currently sorting by {sortParams.key} {sortParams.ascending ? 'ascending' : 'descending'}</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   )
+  // }
 
   const renderInput = () => {
     const [nameText, setNameText] = useState('');
@@ -219,13 +235,17 @@ const App = ({navigation}: RootTabScreenProps<'TabOne'>) => {
     }
   }
 
+  const backgroundColor = '#114';
+  const color = 'white';
+
   return (
-    <SafeAreaView style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.7)}]}>
+    <SafeAreaView style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.8)}]}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={[styles.container, {maxHeight: (Dimensions.get('window').height * 0.8), paddingBottom: 70}]}
       >
       <FlatList
+        ListHeaderComponent={<DragonHeaderItem backgroundColor={{ backgroundColor }} textColor={{ color }} />}
         ListFooterComponent={renderInput}
         data={sorted}
         renderItem={renderItem}
